@@ -12,4 +12,6 @@ class Cat < ActiveRecord::Base
     ((Time.now.to_date - self.birth_date) / 365.0).round(2)
 
   end
+
+  
 end
