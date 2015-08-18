@@ -5,7 +5,17 @@ class CatRentalRequest < ActiveRecord::Base
   validates :cat_id, :start_date, :end_date, :status, presence: true
   validate :overlapping_approved_requests    # Custom Validation takes a singular verb
 
+  after_initialize :set_pending
+
   belongs_to :cat
+
+
+
+  private
+
+  def set_pending
+    self.status ||= "PENDING"
+  end
 
   def overlapping_requests
     CatRentalRequest.where("status = 'APPROVED' AND cat_id = #{self.cat_id}")
