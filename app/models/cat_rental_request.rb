@@ -3,13 +3,25 @@ require 'byebug'
 class CatRentalRequest < ActiveRecord::Base
   validates :status, inclusion: {in: %w(PENDING APPROVED DENIED)}
   validates :cat_id, :start_date, :end_date, :status, presence: true
-  validate :overlapping_approved_requests    # Custom Validation takes a singular verb
+  validate :cannot_have_overlapping_requests    # Custom Validation takes a singular verb
 
   after_initialize :set_pending
 
   belongs_to :cat
 
+  def approve!
+    CatRentalRequest.transaction do
+      self.update!(status: "APPROVED")
+      overlapping_pending_requests.each do |request|
+        #debugger
+        request.deny!
+      end
+    end
+  end
 
+  def deny!
+    self.status = "DENIED"
+  end
 
   private
 
@@ -18,20 +30,24 @@ class CatRentalRequest < ActiveRecord::Base
   end
 
   def overlapping_requests
-    CatRentalRequest.where("status = 'APPROVED' AND cat_id = #{self.cat_id}")
+    CatRentalRequest
+        .where('(? > start_date AND
+                end_date > ? ) AND cat_id = ?',
+                self.end_date,  self.start_date, self.cat_id)
+  end
+
+  def overlapping_pending_requests
+    overlapping_requests.where("status = 'PENDING'")
   end
 
   def overlapping_approved_requests
-    if self.status == "APPROVED"
-      overlapping_requests.each do |approved_request|
-
-        if approved_request.end_date > self.start_date ||
-            self.end_date.between?(approved_request.start_date, request.end_date)
-            errors[:start_date] << "this cat is already in use"
-        end
-      end
-    end
+    overlapping_requests.where("status = 'APPROVED'")
   end
 
+  def cannot_have_overlapping_requests
+    if self.status == "APPROVED" && !overlapping_approved_requests.empty?
+      errors[:cat_id] << "cat is in use"
+    end
+  end
 
 end
