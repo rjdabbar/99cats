@@ -5,6 +5,11 @@ class Cat < ActiveRecord::Base
   validates :color, inclusion: { in: CAT_COLORS}
   validates :sex, inclusion: { in: %w(M F)}
 
+  has_many :rental_requests,
+  foreign_key: :cat_id,
+  primary_key: :id,
+  class_name: "CatRentalRequest"
+
 
   def age
 
