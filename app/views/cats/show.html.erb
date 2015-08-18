@@ -24,11 +24,20 @@
   <tr>
     <td>Start Date</td>
     <td>End Date</td>
+    <td>Status</td>
   </tr>
 <% @cat_requests.each do |request| %>
 
   <tr>
     <td> <%= request.start_date %> </td>
     <td> <%= request.end_date %> </td>
+<% if request.status == "APPROVED"%>
+    <td>APPROVED</td>
+<% elsif request.status == "DENIED"%>
+    <td>DENIED</td>
+<% else %>
+    <td><%= button_to "Approve",  approve_cat_rental_request_path, params: {request_id: request.id }  %> /
+        <%= button_to "Deny", deny_cat_rental_request_path, params: {request_id: request.id } %> </td>
+<% end %>
   </tr>
 <% end %>
