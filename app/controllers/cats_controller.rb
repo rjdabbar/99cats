@@ -21,7 +21,22 @@ class CatsController < ApplicationController
   end
 
   def new
+    @cat = Cat.new
     render :new
+  end
+
+  def edit
+    @cat = Cat.find(params[:id])
+    render :edit
+  end
+
+  def update
+    @cat = Cat.find(params[:id])
+    if @cat.update
+      redirect_to cat_url(@cat)
+    else
+      render :edit
+    end
   end
 
   private

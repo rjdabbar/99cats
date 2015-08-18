@@ -1,7 +1,8 @@
 require 'byebug'
 class Cat < ActiveRecord::Base
+  CAT_COLORS = %w(white black calico orange tabby grey)
   validates :name, presence: true
-  validates :color, inclusion: { in: %w(white black calico orange tabby grey)}
+  validates :color, inclusion: { in: CAT_COLORS}
   validates :sex, inclusion: { in: %w(M F)}
 
 
@@ -13,5 +14,5 @@ class Cat < ActiveRecord::Base
 
   end
 
-  
+
 end
