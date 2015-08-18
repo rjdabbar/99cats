@@ -5,7 +5,7 @@ class Cat < ActiveRecord::Base
   validates :color, inclusion: { in: CAT_COLORS}
   validates :sex, inclusion: { in: %w(M F)}
 
-  has_many :rental_requests, dependant: :destroy
+  has_many :rental_requests, dependent: :destroy,
   foreign_key: :cat_id,
   primary_key: :id,
   class_name: "CatRentalRequest"

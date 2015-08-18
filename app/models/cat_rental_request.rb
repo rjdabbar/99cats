@@ -22,12 +22,13 @@ class CatRentalRequest < ActiveRecord::Base
   end
 
   def overlapping_approved_requests
+    if self.status == "APPROVED"
+      overlapping_requests.each do |approved_request|
 
-    overlapping_requests.each do |approved_request|
-
-      if approved_request.end_date > self.start_date ||
-          self.end_date.between?(approved_request.start_date, request.end_date)
-          errors[:start_date] << "this cat is already in use"
+        if approved_request.end_date > self.start_date ||
+            self.end_date.between?(approved_request.start_date, request.end_date)
+            errors[:start_date] << "this cat is already in use"
+        end
       end
     end
   end
