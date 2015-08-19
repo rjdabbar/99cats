@@ -2,13 +2,14 @@ require 'byebug'
 
 class CatRentalRequest < ActiveRecord::Base
   validates :status, inclusion: {in: %w(PENDING APPROVED DENIED)}
-  validates :cat_id, :start_date, :end_date, :status, presence: true
+  validates :cat_id, :start_date, :end_date, :status, :user_id, presence: true
   validate :cannot_have_overlapping_requests    # Custom Validation takes a singular verb
 
   after_initialize :set_pending
 
   belongs_to :cat
-
+  belongs_to :user
+  
   def approve!
     CatRentalRequest.transaction do
       self.update!(status: "APPROVED")

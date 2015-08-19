@@ -1,28 +1,20 @@
 class UsersController < ApplicationController
   before_action :check_signed_in, only: [:new, :create]
 
-
-
   def new
-
   end
 
-
   def create
-    @user = User.new(user_params[:user_name], user_params[:password])
+    @user = User.new(user_params)
     if @user.save
+      sign_in(@user)
       redirect_to cats_url
     else
       render :new
     end
   end
 
-  def show
-    @user = User.find_by_credentials(user_params[:user_name], user_params[:password])
-  end
-
   private
-
 
   def check_signed_in
     redirect_to cats_url if signed_in?

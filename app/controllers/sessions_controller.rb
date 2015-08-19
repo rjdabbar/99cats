@@ -1,8 +1,6 @@
 class SessionsController < ApplicationController
   before_action :check_signed_in, only: [:new, :create]
 
-
-
   def new
   end
 
@@ -20,7 +18,6 @@ class SessionsController < ApplicationController
     sign_out(current_user)
     redirect_to new_session_url
   end
-
 
   private
 

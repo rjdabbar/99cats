@@ -29,8 +29,22 @@
 </table>
 
 <h2>Cat Rental Requests</h2>
+<form action="<%= new_cat_rental_request_url %>" method="get">
+  <input type="hidden"
+         name="authenticity_token"
+         value="<%=form_authenticity_token%>">
+
+ <input type="hidden"
+        name="cat[id]"
+        value="<%= @cat.id %>">
+
+ <button name="rental_request">New Rental Request</button>
+
+</form>
+
 <table>
   <tr>
+    <td>Renter Name</td>
     <td>Start Date</td>
     <td>End Date</td>
     <td>Status</td>
@@ -38,6 +52,7 @@
 <% @cat_requests.each do |request| %>
 
   <tr>
+    <td> <%= request.user.user_name %> </td>
     <td> <%= request.start_date %> </td>
     <td> <%= request.end_date %> </td>
 <% if request.status == "APPROVED"%>
@@ -53,7 +68,7 @@
              value="<%=form_authenticity_token%>">
       <button name="APPROVED">APPROVE</button>
     </form>
-    <form  action="<%= deny_cat_rental_request_path %>" method="post">
+    <form  action="<%= deny_cat_rental_request_url %>" method="post">
       <input type="hidden" name="request_id" value="<%= request.id %>">
       <input type="hidden"
              name="authenticity_token"
