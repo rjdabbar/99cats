@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :cats
   resources :cat_rental_requests
+  resources :users, only: [:new, :create]
   resources :cat_rental_requests do
     member do
       post 'approve'
