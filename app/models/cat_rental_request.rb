@@ -12,15 +12,13 @@ class CatRentalRequest < ActiveRecord::Base
   def approve!
     CatRentalRequest.transaction do
       self.update!(status: "APPROVED")
-      overlapping_pending_requests.each do |request|
-        #debugger
-        request.deny!
-      end
+      overlapping_pending_requests.update_all(status: "DENIED")
     end
   end
 
   def deny!
     self.status = "DENIED"
+    self.save!
   end
 
   private
