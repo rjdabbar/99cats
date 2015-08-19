@@ -6,11 +6,9 @@ class User < ActiveRecord::Base
   after_initialize :set_session_token
 
   def self.find_by_credentials(user_name, password)
-    if is_password?(password)
-      User.find(user_name: user_name)
-    else
-      nil
-    end
+    user = User.find_by_user_name(user_name)
+    return nil if user.nil?
+    user.is_password?(password) ? user : nil
   end
 
   def reset_session_token!
