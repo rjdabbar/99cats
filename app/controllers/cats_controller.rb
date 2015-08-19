@@ -1,5 +1,6 @@
 require 'byebug'
 class CatsController < ApplicationController
+  before_action :check_owner, only: [:edit, :update]
 
   def index
     @cats = Cat.all
@@ -14,6 +15,7 @@ class CatsController < ApplicationController
 
   def create
     @cat = Cat.new(cat_params)
+    @cat.owner = current_user
     if @cat.save
       redirect_to cat_url(@cat)
     else
@@ -33,7 +35,7 @@ class CatsController < ApplicationController
 
   def update
     @cat = Cat.find(params[:id])
-    if @cat.update
+    if @cat.update(cat_params)
       redirect_to cat_url(@cat)
     else
       render :edit
@@ -45,5 +47,11 @@ class CatsController < ApplicationController
   private
   def cat_params
     params.require(:cat).permit(:name, :color, :sex, :birth_date, :description)
+  end
+
+  def check_owner
+    unless Cat.find(params[:id]).owner == current_user
+      redirect_to cats_url
+    end
   end
 end

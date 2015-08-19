@@ -1,6 +1,15 @@
 <h1><%= @cat.name %></h1>
 
 <h2>Cat Data!</h2>
+<% if @cat.owner == current_user %>
+<form action="<%= edit_cat_url(@cat) %>" method="post">
+  <input type="hidden" name="_method" value="get">
+  <input type="hidden"
+         name="authenticity_token"
+         value="<%=form_authenticity_token%>">
+  <button name="Edit">Edit Cat Data</button>
+</form>
+<% end %>
 <table>
   <tr>
     <td>name</td>
@@ -35,9 +44,27 @@
     <td>APPROVED</td>
 <% elsif request.status == "DENIED"%>
     <td>DENIED</td>
+<% elsif @cat.owner == current_user %>
+  <td>
+    <form  action="<%= approve_cat_rental_request_url %>" method="post">
+      <input type="hidden" name="request_id" value="<%= request.id %>">
+      <input type="hidden"
+             name="authenticity_token"
+             value="<%=form_authenticity_token%>">
+      <button name="APPROVED">APPROVE</button>
+    </form>
+    <form  action="<%= deny_cat_rental_request_path %>" method="post">
+      <input type="hidden" name="request_id" value="<%= request.id %>">
+      <input type="hidden"
+             name="authenticity_token"
+             value="<%=form_authenticity_token%>">
+      <button name="DENIED">DENY</button>
+    </form>
+  </td>
+
+
 <% else %>
-    <td><%= button_to "Approve",  approve_cat_rental_request_path, params: {request_id: request.id }  %> /
-        <%= button_to "Deny", deny_cat_rental_request_path, params: {request_id: request.id } %> </td>
+    <td>PENDING</td>
 <% end %>
   </tr>
 <% end %>

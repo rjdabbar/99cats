@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_action :check_signed_in
+  before_action :check_signed_in, only: [:new, :create]
 
 
 
@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
   def user_params
     params.require(:user).permit(:user_name, :password)
   end
-  
+
   def check_signed_in
     redirect_to cats_url if signed_in?
   end

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :check_signed_in
+  before_action :check_signed_in, only: [:new, :create]
 
 
 

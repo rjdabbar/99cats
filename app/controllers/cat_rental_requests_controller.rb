@@ -1,4 +1,6 @@
 class CatRentalRequestsController < ApplicationController
+  before_action :check_owner, only: [:approve, :deny]
+
   def new
     @rental_request = CatRentalRequest.new
     @cats = Cat.all
@@ -39,5 +41,12 @@ class CatRentalRequestsController < ApplicationController
                                                :start_date,
                                                :end_date,
                                                :status)
+  end
+
+  def check_owner
+    unless Cat.find(params[:id]).owner == current_user
+
+      redirect_to cats_url(params[:id])
+    end
   end
 end

@@ -10,6 +10,16 @@
 
   <% if signed_in? %>
     <%= current_user.user_name %>
+    <form  action="<%= session_url %>" method="post">
+
+      <input type="hidden"
+             name="authenticity_token"
+             value="<%=form_authenticity_token%>">
+
+      <input type="hidden" name="_method" value="delete">
+
+      <button name="Log Out">Log Out</button>
+    </form>
   <% else %>
     <a href="<%= new_session_url %>">Sign In</a>
     <a href="<%= new_user_url %>">Sign Up</a>

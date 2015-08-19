@@ -1,2 +1,5 @@
 <h1>Edit Cat</h1>
+
+<form action="<%= cat_path(@cat) %>" method="post">
+  <input type="hidden" name="_method" value="patch">
 <%= render partial: "form", locals: {cat: @cat} %>
