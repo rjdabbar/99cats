@@ -1,7 +1,15 @@
 class UsersController < ApplicationController
+  before_action :check_signed_in
+
+  def check_signed_in
+    redirect_to cats_url if signed_in?
+  end
+
+
   def new
 
   end
+
 
   def create
     @user = User.new(user_params[:user_name], user_params[:password])

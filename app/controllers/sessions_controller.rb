@@ -1,4 +1,10 @@
 class SessionsController < ApplicationController
+  before_action :check_signed_in
+
+  def check_signed_in
+    redirect_to cats_url if signed_in?
+  end
+
   def new
   end
 
@@ -14,7 +20,7 @@ class SessionsController < ApplicationController
 
   def destroy
     sign_out(current_user)
-    redirect_to #somewhere
+    redirect_to new_session_url
   end
 
 
