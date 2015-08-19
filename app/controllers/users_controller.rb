@@ -1,9 +1,6 @@
 class UsersController < ApplicationController
   before_action :check_signed_in
 
-  def check_signed_in
-    redirect_to cats_url if signed_in?
-  end
 
 
   def new
@@ -25,6 +22,11 @@ class UsersController < ApplicationController
   end
 
   private
+
+
+  def check_signed_in
+    redirect_to cats_url if signed_in?
+  end
 
   def user_params
     params.require(:user).permit(:user_name, :password)

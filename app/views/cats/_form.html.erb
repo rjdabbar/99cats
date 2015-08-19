@@ -1,6 +1,9 @@
 
 <form action="<%= cats_url %>" method="post">
   <input type="hidden" name="_update" value="patch">
+  <input type="hidden"
+         name="<%=request_forgery_protection_token.to_s%>"
+         value="<%=form_authenticity_token%>">
 
   <label for="cat_name">Name:</label>
   <input id="cat_name"
