@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
   before_action :check_signed_in, only: [:new, :create]
 
+
   def new
   end
 
@@ -10,16 +11,20 @@ class SessionsController < ApplicationController
       sign_in(@user)
       redirect_to cats_url
     else
+      flash.now[:errors] = @user.errors.full_messages
       render :new
     end
   end
 
   def destroy
-    sign_out(current_user)
+    sign_out
     redirect_to new_session_url
   end
 
+
+
   private
+
 
   def user_params
     params.require(:user).permit(:user_name, :password)

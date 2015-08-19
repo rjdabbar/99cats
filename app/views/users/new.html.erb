@@ -1,5 +1,11 @@
 <h1>Sign up!</h1>
 
+<% if flash.now[:errors] %>
+  <% flash.now[:errors].each do |error| %>
+    <%= error %><br />
+  <% end %>
+<% end %>
+
 <form action="<%= users_url %>" method="post">
   <%= render partial: 'partials/user_creds' %>
   <input type="submit" name="Sign up!">
